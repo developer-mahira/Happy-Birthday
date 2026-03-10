@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sameer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0A0A0C;
+            --surface: #111116;
+            --border: #1E1E28;
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-dim: #8A6F30;
+            --text-primary: #F0EDE6;
+            --text-secondary: #8B8880;
+            --accent: #D4A847;
+            --grain-opacity: 0.035;
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Libre Baskerville', Georgia, serif;
+            background-color: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            opacity: 0;
+            animation: fadeInBg 1s ease-out forwards;
+        }
+
+        @keyframes fadeInBg {
+            to { opacity: 1; }
+        }
+
+        /* Grain Texture Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            animation: grainFadeIn 1.5s ease-out 0.5s forwards;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        @keyframes grainFadeIn {
+            to { opacity: var(--grain-opacity); }
+        }
+
+        /* Canvas Particle Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+
+        .hero-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(4rem, 15vw, 12rem);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            display: flex;
+            margin-bottom: 1.5rem;
+            cursor: default;
+        }
+
+        .hero-text span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(40px);
+            animation: letterReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            color: var(--text-primary);
+            text-shadow: 0 0 60px rgba(201, 168, 76, 0.3);
+        }
+
+        @keyframes letterReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+            margin-bottom: 2rem;
+        }
+
+        .hero-subtitle .emoji {
+            color: var(--gold);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Gold Rule Animation */
+        .gold-rule {
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold));
+            opacity: 0;
+            animation: ruleDraw 1.2s ease-out 1s forwards, fadeIn 0.5s ease-out 1s forwards;
+        }
+
+        @keyframes ruleDraw {
+            to { width: min(300px, 60vw); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Terminal Card */
+        .terminal-section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .terminal-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 
+                0 4px 24px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(201, 168, 76, 0.05);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: cardReveal 0.8s ease-out 1.5s forwards;
+        }
+
+        @keyframes cardReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .terminal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(201, 168, 76, 0.15);
+        }
+
+        .terminal-header {
+            background: linear-gradient(180deg, #1A1A22 0%, #141418 100%);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #FF5F57; }
+        .terminal-dot.yellow { background: #FFBD2E; }
+        .terminal-dot.green { background: #28CA42; }
+
+        .terminal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: 12px;
+        }
+
+        .terminal-body {
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .terminal-line {
+            margin-bottom: 0.5rem;
+            min-height: 1.5em;
+        }
+
+        .terminal-line.command {
+            color: var(--gold);
+        }
+
+        .terminal-line.emphasis {
+            color: var(--gold-light);
+        }
+
+        .terminal-line.body-text {
+            color: var(--text-secondary);
+        }
+
+        .terminal-line.signature {
+            color: var(--gold-dim);
+            font-style: italic;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--gold);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Decorative Code Element */
+        .code-decoration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .code-symbol {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: var(--gold);
+            text-shadow: 0 0 40px rgba(201, 168, 76, 0.5);
+            animation: glowPulse 3s ease-in-out infinite;
+            line-height: 1;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { 
+                text-shadow: 0 0 40px rgba(201, 168, 76, 0.5);
+                opacity: 0.9;
+            }
+            50% { 
+                text-shadow: 0 0 80px rgba(201, 168, 76, 0.8);
+                opacity: 1;
+            }
+        }
+
+        .code-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            letter-spacing: 0.1em;
+        }
+
+        /* Cake Section */
+        .cake-section {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cake-container {
+            position: relative;
+            width: 120px;
+            height: 140px;
+        }
+
+        .cake {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cake-bottom {
+            width: 100px;
+            height: 40px;
+            background: linear-gradient(135deg, #8B5A2B 0%, #6B4423 100%);
+            border-radius: 4px 4px 8px 8px;
+            position: relative;
+        }
+
+        .cake-bottom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(180deg, #C9A84C 0%, #8A6F30 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .cake-middle {
+            width: 80px;
+            height: 35px;
+            background: linear-gradient(135deg, #A0694B 0%, #7A4A2A 100%);
+            border-radius: 4px;
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cake-middle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(180deg, #D4A847 0%, #9A7F30 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .cake-top {
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(135deg, #C97B63 0%, #9A5545 100%);
+            border-radius: 4px;
+            position: absolute;
+            bottom: 75px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cake-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(180deg, #E8C97A 0%, #B08F40 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .candle {
+            position: absolute;
+            bottom: 105px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 35px;
+            background: linear-gradient(180deg, #F5F5F5 0%, #E0E0E0 100%);
+            border-radius: 2px;
+        }
+
+        .flame {
+            position: absolute;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 24px;
+            background: radial-gradient(ellipse at bottom, #FFD700 0%, #FF8C00 50%, transparent 70%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.5s ease-in-out infinite alternate;
+        }
+
+        .flame::before {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 12px;
+            background: radial-gradient(ellipse at bottom, #FFFACD 0%, #FFD700 60%, transparent 100%);
+            border-radius: 50%;
+            animation: flickerInner 0.3s ease-in-out infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: translateX(-50%) scale(1) rotate(-2deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) scale(1.1) rotate(2deg);
+                opacity: 0.9;
+            }
+        }
+
+        @keyframes flickerInner {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* Floating Badges */
+        .badges-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .floating-badge {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 8px 14px;
+            background: rgba(17, 17, 22, 0.85);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            animation: floatUp 12s ease-in-out infinite;
+        }
+
+        .floating-badge:nth-child(1) {
+            left: 5%;
+            animation-delay: 2s;
+            color: var(--gold-dim);
+        }
+
+        .floating-badge:nth-child(2) {
+            right: 8%;
+            animation-delay: 4s;
+            color: var(--gold);
+        }
+
+        .floating-badge:nth-child(3) {
+            left: 15%;
+            animation-delay: 6s;
+            color: var(--gold-light);
+        }
+
+        .floating-badge:nth-child(4) {
+            right: 20%;
+            animation-delay: 8s;
+            color: var(--text-secondary);
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0.8);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(90vh) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-10vh) scale(0.8);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-divider {
+            width: min(200px, 50vw);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+            margin: 0 auto 2rem;
+        }
+
+        .footer-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--gold);
+            margin-left: 4px;
+            animation: blink 1s step-end infinite;
+            vertical-align: text-bottom;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-text {
+                letter-spacing: 0.1em;
+            }
+
+            .terminal-body {
+                padding: 16px;
+            }
+
+            .floating-badge {
+                font-size: 0.6rem;
+                padding: 6px 10px;
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .hero-text span {
+                opacity: 1;
+                transform: none;
+            }
+
+            .terminal-card {
+                opacity: 1;
+                transform: none;
+            }
+
+            .gold-rule {
+                width: min(300px, 60vw);
+                opacity: 1;
+            }
+
+            .cursor, .footer-cursor {
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="badges-container">
+        <div class="floating-badge">git commit -m 'Happy Birthday'</div>
+        <div class="floating-badge">npm run celebrate</div>
+        <div class="floating-badge">status: 200 OK 🎂</div>
+        <div class="floating-badge">branch: another_year_wiser</div>
+    </div>
+
+    <section class="hero">
+        <h1 class="hero-text" id="hero-text">
+            <span>S</span><span>A</span><span>M</span><span>E</span><span>E</span><span>R</span>
+        </h1>
+        <p class="hero-subtitle">// Happy Birthday, Bhai <span class="emoji">🎂</span></p>
+        <div class="gold-rule"></div>
+    </section>
+
+    <section class="terminal-section">
+        <div class="terminal-card">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">birthday_wish.sh</span>
+            </div>
+            <div class="terminal-body">
+                <div id="terminal-content"></div>
+                <span class="cursor" id="cursor"></span>
+            </div>
+        </div>
+    </section>
+
+    <div class="code-decoration">
+        <div class="code-symbol"></></div>
+        <div class="code-label">Senior Dev Mode: ON</div>
+    </div>
+
+    <div class="cake-section">
+        <div class="cake-container">
+            <div class="cake">
+                <div class="candle"></div>
+                <div class="flame"></div>
+                <div class="cake-top"></div>
+                <div class="cake-middle"></div>
+                <div class="cake-bottom"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-divider"></div>
+        <p class="footer-text">May this year be your greatest deployment yet.<span class="footer-cursor"></span></p>
+    </footer>
+
+    <script>
+        // Hero Text Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const letters = document.querySelectorAll('.hero-text span');
+            letters.forEach((letter, index) => {
+                letter.style.animationDelay = `${0.2 + index * 0.08}s`;
+            });
+
+            // Mouse Parallax Effect
+            const hero = document.querySelector('.hero');
+            const heroText = document.querySelector('.hero-text');
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                mouseX = (e.clientX - centerX) / centerX;
+                mouseY = (e.clientY - centerY) / centerY;
+            });
+
+            function animate() {
+                targetX += (mouseX * 8 - targetX) * 0.1;
+                targetY += (mouseY * 8 - targetY) * 0.1;
+                
+                if (heroText) {
+                    heroText.style.transform = `translate(${targetX}px, ${targetY}px)`;
+                }
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+        });
+
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const particleCount = 80;
+        const connectionDistance = 120;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+                this.alpha = Math.random() * 0.5 + 0.3;
+                this.color = Math.random() > 0.5 ? '#C9A84C' : '#E8C97A';
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.15;
+                        ctx.beginPath();
+                        ctx.strokeStyle = '#C9A84C';
+                        ctx.globalAlpha = opacity;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // Typewriter Effect
+        const messageLines = [
+            { text: '$ echo "Happy Birthday, Sameer Bhai! 🎉"', class: 'command' },
+            { text: '', class: '' },
+            { text: 'Another year of shipping clean code,', class: 'body-text' },
+            { text: 'debugging life\'s toughest edge cases,', class: 'body-text' },
+            { text: 'and building things that actually matter.', class: 'body-text' },
+            { text: '', class: '' },
+            { text: 'You\'re not just a year older —', class: 'body-text' },
+            { text: 'you\'re a year more optimized.', class: 'emphasis' },
+            { text: 'More battle-tested. More senior.', class: 'body-text' },
+            { text: '', class: '' },
+            { text: 'May your builds always pass,', class: 'body-text' },
+            { text: 'your PRs get approved without comments,', class: 'body-text' },
+            { text: 'your coffee stay hot,', class: 'body-text' },
+            { text: 'and your weekends stay merge-conflict-free.', class: 'body-text' },
+            { text: '', class: '' },
+            { text: 'Here\'s to the one who writes code', class: 'body-text' },
+            { text: 'like poetry — and lives life', class: 'body-text' },
+            { text: 'with the same precision.', class: 'body-text' },
+            { text: '', class: '' },
+            { text: 'Happy Birthday, bhai.', class: 'emphasis' },
+            { text: 'Aaj ka din sirf tera hai. 🥂', class: 'emphasis' },
+            { text: '', class: '' },
+            { text: '— With respect and love, always.', class: 'signature' }
+        ];
+
+        const terminalContent = document.getElementById('terminal-content');
+        const cursor = document.getElementById('cursor');
+        let lineIndex = 0;
+        let charIndex = 0;
+        let isPaused = false;
+
+        function typeWriter() {
+            if (lineIndex >= messageLines.length) {
+                return;
+            }
+
+            const currentLine = messageLines[lineIndex];
+            
+            if (!currentLine.text) {
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 300);
+                return;
+            }
+
+            if (charIndex === 0) {
+                const lineElement = document.createElement('div');
+                lineElement.className = `terminal-line ${currentLine.class}`;
+                terminalContent.appendChild(lineElement);
+            }
+
+            const currentElement = terminalContent.lastElementChild;
+            
+            if (charIndex < currentLine.text.length) {
+                currentElement.textContent += currentLine.text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 45);
+            } else {
+                lineIndex++;
+                charIndex = 0;
+                setTimeout(typeWriter, 600);
+            }
+        }
+
+        setTimeout(typeWriter, 2000);
+
+        // Flame additional animation layers for more natural flicker
+        const flames = document.querySelectorAll('.flame');
+        flames.forEach((flame, index) => {
+            flame.style.animationDelay = `${index * 0.15}s`;
+        });
+    </script>
+</body>
+</html>
+
